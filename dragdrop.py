@@ -32,7 +32,8 @@ while run:
 
     #Event = Checks any interaction with the screen: Exiting, MouseDown, Mouse Click
     for event in pygame.event.get():
-        #When the LEFT mouse button is click and held down
+        #When the LEFT mouse button is click and held down,
+        #toggle the highlighted box to be dragged
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             if event.button == 1: #Signifies the left mouse button being down
@@ -42,15 +43,25 @@ while run:
                   #Toggle the box to be active.
                   active = 'on'
 
-        #Tracks the location of the mouse
+        #Tracks the location of the mouse. If the box's active status is !none
+        #Move the given box
         if event.type == pygame.MOUSEMOTION:
+            #check if the box is selected
             if active != None:
+                #Move box base on the position of the mouse
                 box.move_ip(event.rel)
+
+        #Drops the box when the mouse button is released
+        if event.type == pygame.MOUSEBUTTONUP:
+            #Check if left mouse button is dropped
+            if event.button == 1:
+                #Set active to null/none again
+                active = None
 
         if event.type == pygame.QUIT:
             run = False
 
-    #Update the contents of the WHOLE screen
+    #Update the contents of the WHOLE screen throughout the loop
     pygame.display.flip()
     #pygame.display.update() can update a portion or the whole screen depending on parameters
 
