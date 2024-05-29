@@ -14,12 +14,12 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 #display the name of the game window
 pygame.display.set_caption('Tester')
 
-#Defines when the box is being moved 
+#Defines when the box is being moved. None is the same as NULL
 active = None
 
 #Creates a rectangle (left, top, width, height)
 #We will call this box 1
-box = pygame.Rect(20,20,20,20)
+box = pygame.Rect(50,50,50,50)
 
 #toggles when game is on or off
 run = True
@@ -34,14 +34,19 @@ while run:
     for event in pygame.event.get():
         #When the LEFT mouse button is click and held down
         if event.type == pygame.MOUSEBUTTONDOWN:
+
             if event.button == 1: #Signifies the left mouse button being down
               #Check if the box collides with the mouse/clicked by mouse
-              if box.collidepoint(event.pos): #Pos, the position of the box
+              #Pos, the position of the box
+              if box.collidepoint(event.pos): 
                   #Toggle the box to be active.
-                  active_box = 1
+                  active = 'on'
+
         #Tracks the location of the mouse
         if event.type == pygame.MOUSEMOTION:
-            print(event)
+            if active != None:
+                box.move_ip(event.rel)
+
         if event.type == pygame.QUIT:
             run = False
 
