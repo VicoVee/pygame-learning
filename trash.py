@@ -17,9 +17,9 @@ black = pygame.Color(0,0,0)
     #Up-Down starts from 0 to 500 as well
 x = 50
 y = 420
-width = 50
-height = 50
-speed = 5
+width = 100
+height = 100
+speed = 40
 
 run = True
 while run:
@@ -34,13 +34,13 @@ while run:
         keys = pygame.key.get_pressed()
 
         #Checks the key and moves the character correspondingly
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] and x > 1:
             x -= speed
-        if keys[pygame.K_d]:
+        elif keys[pygame.K_d] and x < 900:
             x += speed
-        if keys[pygame.K_w]:
+        elif keys[pygame.K_w] and y > 1:
             y -= speed
-        if keys[pygame.K_s]:
+        elif keys[pygame.K_s] and y < 700:
             y += speed
 
     #Load Background
