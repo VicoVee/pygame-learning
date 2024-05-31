@@ -25,12 +25,12 @@ char_height = 100
 char_speed = 40
 
 #Window Boundaries
-WidthBoundary = ScreenWidth - char_x - char_speed
-HelpeightBoundary = ScreenHeight- char_y - char_speed
+WidthBoundary = ScreenWidth - char_width - char_speed
+HeightBoundary = ScreenHeight - char_height - char_speed
 
 #Make a list of interactive trash sprites
 TrashPile= []
-for i in range(5):
+for i in range(10):
     #Randomly assign a size and location of each piece of trash
     trash_x = random.randint(5, ScreenWidth - 100)
     trash_y = random.randint(5, ScreenHeight - 100)
@@ -60,7 +60,7 @@ while run:
             char_x += char_speed
         elif keys[pygame.K_w] and char_y > char_speed:
             char_y -= char_speed
-        elif keys[pygame.K_s] and char_y < HelpeightBoundary:
+        elif keys[pygame.K_s] and char_y < HeightBoundary:
             char_y += char_speed
 
     #Load Background
