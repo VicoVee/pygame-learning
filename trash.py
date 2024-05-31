@@ -4,7 +4,9 @@ import random
 pygame.init()
 
 #Game Window Setup
-win = pygame.display.set_mode((1024,768))
+ScreenWidth = 600
+ScreenHeight = 600
+win = pygame.display.set_mode((ScreenWidth, ScreenHeight))
 pygame.display.set_caption('Trash Collecting')
 
 #Background Colors
@@ -34,13 +36,14 @@ while run:
         keys = pygame.key.get_pressed()
 
         #Checks the key and moves the character correspondingly
-        if keys[pygame.K_a] and x > 1:
+        if keys[pygame.K_a] and x > speed:
             x -= speed
-        elif keys[pygame.K_d] and x < 900:
+        elif keys[pygame.K_d] and x < ScreenWidth - width - speed:
+            print(x)
             x += speed
-        elif keys[pygame.K_w] and y > 1:
+        elif keys[pygame.K_w] and y > speed:
             y -= speed
-        elif keys[pygame.K_s] and y < 700:
+        elif keys[pygame.K_s] and y < ScreenHeight - height - speed:
             y += speed
 
     #Load Background
