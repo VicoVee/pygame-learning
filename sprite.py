@@ -7,52 +7,51 @@ screenHeight = 500
 screen = pygame.display.set_mode((screenWidth, screenHeight))
 pygame.display.set_caption("Sprites Test")
 
-class Spritesheet:
+class Spritesheet():
     #Holds the spritesheet
     def __init__(self,filename):
         self.filename = filename
         self.sprite_sheet = pygame.image.load(filename).convert()
 
     #Read the spritesheet and get the sprite frame
-    def get_sprite(self, x, y, w, h, scale):
+    def get_frame(self, frame, x, y, w, h, scale):
         #Create empty image (rectangle) which will hold the sprite frame
         sprite = pygame.Surface((w,h))
 
-        #Removes the transparency from the spritesheet
+        #Add the transparency from the spritesheet
         sprite.set_colorkey((0,0,0))
 
-        #Get the spritesheet, location of the empty image frame, and the portion of the spritesheet
-        sprite.blit(self.sprite_sheet, (0,0), (x,y,w,h))
+        #Get the spritesheet, location of the surface, and the portion of the spritesheet
+        sprite.blit(self.sprite_sheet, (0,0), ((frame* w),y,w,h))
 
         #Increasing the scale of the picture (sprite image, [width, height])
         sprite = pygame.transform.scale(sprite, (w * scale, h * scale))
         return sprite
     
-    #Getting a whole list of the sprite frames to animate [ Not Working ]
+    #Getting a whole list of the sprite frames to animate
     def parse_sprite(self):
-        standCount = 0
-        standSprite = []
-        while standCount < 48:
-            spriteStand = self.sprite_sheet.get_sprite(standCount, 0, 24, 24)
-            standCount += 24
-            standSprite.append(spriteStand)
-        return standSprite
+        count = 0
+        frameList = []
+        for i in 4:
+            frame = self.sprite_sheet.get_sprite(count, 0, 0, 0, 24, 24, 8)
+            frame.append(frameList)
+        print(frameList)
+    
     
 #Create Spritesheet object named sheet
 sheet = Spritesheet('doug.png')
 #Retrieve one frame of the sprite
-#Get the first frame (0,0), the sprite is (24x24), and scale by 8
-sprite1 = sheet.get_sprite(0, 0, 24, 24, 8)
+sprite1 = sheet.get_frame(0, 0, 0, 24, 24, 8)
+sheet.parse_sprite
 
-#Main Loop
+
 run = True
 while run:
-    #Background Color
     screen.fill("white")
     #Load the sprite image and place it in corresponding screen position
     screen.blit(sprite1, (150, 200))
+    screen.blit(sheet.get_frame(6, 0,0,24,24, 8), (300,200))
 
-    #When Exit out of Window, end the Pygame program
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
