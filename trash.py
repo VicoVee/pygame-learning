@@ -1,5 +1,6 @@
 import pygame
 import random
+import sprite
 
 pygame.init()
 
@@ -40,6 +41,10 @@ for i in range(10):
     trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
     TrashPile.append(trash)
 
+    #Testing the sprite class
+    doug_sheet = sprite.Spritesheet('doug.png')
+    frame0 = doug_sheet.get_frame(0,0,0,24,24,5)
+
 run = True
 while run:
     #Delay the game loading
@@ -70,8 +75,9 @@ while run:
     for trash in TrashPile:
         pygame.draw.rect(win, purple, trash)
 
-    char = pygame.Rect(char_x, char_y, char_width, char_height)
-    pygame.draw.rect(win, black, char)
+    # char = pygame.Rect(char_x, char_y, char_width, char_height)
+    # pygame.draw.rect(win, black, char)
+    win.blit(frame0, (char_x, char_y))
 
     pygame.display.flip()
 pygame.quit()
