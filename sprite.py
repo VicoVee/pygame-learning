@@ -1,11 +1,11 @@
 import pygame
-pygame.init()
+# pygame.init()
 
-screenWidth = 500
-screenHeight = 500
+# screenWidth = 500
+# screenHeight = 500
 
-screen = pygame.display.set_mode((screenWidth, screenHeight))
-pygame.display.set_caption("Sprites Test")
+# screen = pygame.display.set_mode((screenWidth, screenHeight))
+# pygame.display.set_caption("Sprites Test")
 
 class Spritesheet():
     #Holds the spritesheet
@@ -38,24 +38,24 @@ class Spritesheet():
         print(frameList)
     
     
-#Create Spritesheet object named sheet
-sheet = Spritesheet('doug.png')
-#Retrieve one frame of the sprite
-sprite1 = sheet.get_frame(0, 0, 0, 24, 24, 8)
-sheet.parse_sprite
+# #Create Spritesheet object named sheet
+# sheet = Spritesheet('doug.png')
+# #Retrieve one frame of the sprite
+# sprite1 = sheet.get_frame(0, 0, 0, 24, 24, 8)
+# sheet.parse_sprite
 
 
-run = True
-while run:
-    screen.fill("white")
-    #Load the sprite image and place it in corresponding screen position
-    screen.blit(sprite1, (150, 200))
-    screen.blit(sheet.get_frame(6, 0,0,24,24, 8), (300,200))
+# run = True
+# while run:
+#     screen.fill("white")
+#     #Load the sprite image and place it in corresponding screen position
+#     screen.blit(sprite1, (150, 200))
+#     screen.blit(sheet.get_frame(6, 0,0,24,24, 8), (300,200))
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             run = False
 
-    pygame.display.flip()
+#     pygame.display.flip()
 
-pygame.quit()
+# pygame.quit()
