@@ -15,14 +15,18 @@ sand = pygame.Color("#FFF0AD")
 black = pygame.Color(0,0,0)
 purple = pygame.Color("#A115B3")
 
+#Testing the sprite class
+doug_sheet = sprite.Spritesheet('doug.png')
+frame0 = doug_sheet.get_frame(0,0,0,24,24,5)
+
 #Character Location + Dimensions
     #Character (x-coor, y-coord, width, height)
     #NOTE: Left-Right starts from 0 to 500
     #Up-Down starts from 0 to 500 as well
 char_x = 50
 char_y = 460
-char_width = 50
-char_height = 100
+char_width = frame0.get_width()
+char_height = frame0.get_height()
 char_speed = 40
 
 #Window Boundaries
@@ -40,10 +44,6 @@ for i in range(10):
     #Create and add them to the TrashPile list
     trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
     TrashPile.append(trash)
-
-    #Testing the sprite class
-    doug_sheet = sprite.Spritesheet('doug.png')
-    frame0 = doug_sheet.get_frame(0,0,0,24,24,5)
 
 run = True
 while run:
