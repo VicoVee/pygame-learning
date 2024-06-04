@@ -28,7 +28,7 @@ class Spritesheet:
         sprite = pygame.transform.scale(sprite, (w * scale, h * scale))
         return sprite
     
-    #Getting a whole list of the sprite frames to animate
+    #Getting a whole list of the sprite frames to animate [ Not Working ]
     def parse_sprite(self):
         standCount = 0
         standSprite = []
@@ -41,16 +41,18 @@ class Spritesheet:
 #Create Spritesheet object named sheet
 sheet = Spritesheet('doug.png')
 #Retrieve one frame of the sprite
+#Get the first frame (0,0), the sprite is (24x24), and scale by 8
 sprite1 = sheet.get_sprite(0, 0, 24, 24, 8)
 
-
+#Main Loop
 run = True
 while run:
-
+    #Background Color
     screen.fill("white")
     #Load the sprite image and place it in corresponding screen position
     screen.blit(sprite1, (150, 200))
 
+    #When Exit out of Window, end the Pygame program
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
