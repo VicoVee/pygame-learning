@@ -27,29 +27,23 @@ class Spritesheet():
         #Increasing the scale of the picture (sprite image, [width, height])
         sprite = pygame.transform.scale(sprite, (w * scale, h * scale))
         return sprite
-    
-    #Getting a whole list of the sprite frames to animate
-    def parse_sprite(self):
-        count = 0
-        frameList = []
-        for i in 4:
-            frame = self.sprite_sheet.get_sprite(count, 0, 0, 0, 24, 24, 8)
-            frame.append(frameList)
-        print(frameList)
+
+       
     
     
-# #Create Spritesheet object named sheet
+# # #Create Spritesheet object named sheet
 # sheet = Spritesheet('doug.png')
 # #Retrieve one frame of the sprite
-# sprite1 = sheet.get_frame(0, 0, 0, 24, 24, 8)
-# sheet.parse_sprite
+# #sprite1 = sheet.get_frame(0, 0, 0, 24, 24, 8)
+# list = sheet.parse_sprite
+# print(list)
 
 
 # run = True
 # while run:
 #     screen.fill("white")
 #     #Load the sprite image and place it in corresponding screen position
-#     screen.blit(sprite1, (150, 200))
+#     #screen.blit(sprite1, (150, 200))
 #     screen.blit(sheet.get_frame(6, 0,0,24,24, 8), (300,200))
 
 #     for event in pygame.event.get():
