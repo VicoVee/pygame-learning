@@ -15,27 +15,33 @@ sand = pygame.Color("#FFF0AD")
 black = pygame.Color(0,0,0)
 purple = pygame.Color("#A115B3")
 
-#Getting the Character Sprite
+# ~~ Getting the Character Sprite ~~
 #Load in the spritesheet
 doug_sheet = sprite.Spritesheet('doug.png')
 #Take a single frame from the spritesheet
 frame0 = doug_sheet.get_frame(1,0,0,24,24,3)
 
-#Creating Sprite animation
+# ~~ Creating Sprite animation ~~
 #Holds a list of all frames in the animation
 frameList = []
-#I want the first four frames, so indicated by this variable
-frame_steps = 4
+#Holds the start from the set of animations in the sprite sheet 
+#(stand, run, jump, [Not Added here] injured, and crouch)
+frameSet = [4, 6, 4]
+#Holds the current animation to run from frameSet
+#0 = stand; 1 = run, 2 = jump
+current_set = 0
 #A timer to track the frames and play them correctly
 last_update = pygame.time.get_ticks()
+#Tracks how long each frame should play before loading the next frame
 frame_cooldown = 200
-start_frame = 0
+#Track the current frame in frameList
+current_frame = 0
 
-#Collects the 4 frames I want and place into the frameList
-for i in range(frame_steps):
+#Collects all the frames based on the selected frameSet
+for i in range(frameSet[0]):
     frameList.append(doug_sheet.get_frame(i, 0, 0, 24, 24, 3))
 
-#Character Location + Dimensions
+# ~~ Character Location + Dimensions ~~
     #Character (x-coor, y-coord, width, height)
     #NOTE: Left-Right starts from 0 to 500
     #NOTE: Up-Down starts from 0 to 500 as well
@@ -96,18 +102,18 @@ while run:
     current_time = pygame.time.get_ticks()
     #Check the duration between frames. If the frame cooldown is over, get the next frame and reset the cooldown
     if current_time - last_update >= frame_cooldown:
-        start_frame += 1
+        current_frame += 1
         last_update = current_time
     #When all frames are played, reset to the starting frame
-    if start_frame >= len(frameList):
-        start_frame = 0
+    if current_frame >= len(frameList):
+        current_frame = 0
         
     # char = pygame.Rect(char_x, char_y, char_width, char_height)
     # pygame.draw.rect(win, black, char)
     #Instead of a rectangle, it been replace with a single frame from the sprite sheet
 
     #Show frame
-    win.blit(frameList[start_frame], (char_x, char_y))
+    win.blit(frameList[current_frame], (char_x, char_y))
 
     pygame.display.flip()
 pygame.quit()
