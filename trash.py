@@ -23,23 +23,31 @@ frame0 = doug_sheet.get_frame(1,0,0,24,24,3)
 
 # ~~ Creating Sprite animation ~~
 #Holds a list of all frames in the animation
-frameList = []
+frameStand = []
+frameWalkLeft = []
+frameWalkRight = []
 #Holds the start from the set of animations in the sprite sheet 
 #(stand, run, jump, [Not Added here] injured, and crouch)
 frameSet = [4, 6, 4]
 #Holds the current animation to run from frameSet
-#0 = stand; 1 = run, 2 = jump
+#0 = stand; 1 = runLeft, 2 = runRight
 current_set = 0
 #A timer to track the frames and play them correctly
 last_update = pygame.time.get_ticks()
 #Tracks how long each frame should play before loading the next frame
-frame_cooldown = 200
+frame_cooldown = 100
 #Track the current frame in frameList
 current_frame = 0
 
 #Collects all the frames based on the selected frameSet
 for i in range(frameSet[0]):
-    frameList.append(doug_sheet.get_frame(i, 0, 0, 24, 24, 3))
+    frameStand.append(doug_sheet.get_frame(i, 0, 0, 24, 24, 3))
+
+for i in range(frameSet[1]):
+    frameWalkLeft.append(doug_sheet.get_frame(i + frameSet[0], 0, 0, 24, 24, 3))
+
+for i in range(len(frameWalkLeft)):
+    frameWalkRight.append(pygame.transform.flip(frameWalkLeft[i], True, False))
 
 # ~~ Character Location + Dimensions ~~
     #Character (x-coor, y-coord, width, height)
@@ -49,23 +57,36 @@ char_x = 50
 char_y = 460
 char_width = frame0.get_width()
 char_height = frame0.get_height()
-char_speed = 30
+char_speed = 15
+left = None
+right = None
 
 #Window Boundaries
 WidthBoundary = ScreenWidth - char_width - char_speed
 HeightBoundary = ScreenHeight - char_height - char_speed
 
-#Make a list of interactive trash sprites
-TrashPile= []
-for i in range(10):
-    #Randomly assign a size and location of each piece of trash
-    trash_x = random.randint(5, ScreenWidth - 100)
-    trash_y = random.randint(5, ScreenHeight - 100)
-    trash_w = random.randint(20, 50)
-    trash_h = random.randint(20, 80)
-    #Create and add them to the TrashPile list
-    trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
-    TrashPile.append(trash)
+
+def redrawGameWindow():
+    global set
+
+    #Load/Update Background
+    win.fill(sand)
+    
+    # #Load the trash in
+    # for trash in TrashPile:
+    #     pygame.draw.rect(win, purple, trash)
+
+    #Show frame
+    if current_set == 1 and left == True:
+        win.blit(frameWalkLeft[current_frame], (char_x, char_y))
+    elif current_set == 1 and right == True:
+        win.blit(frameWalkRight[current_frame], (char_x, char_y))
+    else:
+        win.blit(frameStand[current_frame], (char_x, char_y))
+
+
+    #Update Window
+    pygame.display.flip()
 
 run = True
 while run:
@@ -83,19 +104,22 @@ while run:
         #Checks the key and moves the character correspondingly
         if keys[pygame.K_a] and char_x > char_speed:
             char_x -= char_speed
+            left = False
+            right = True
+            current_set = 1
         elif keys[pygame.K_d] and char_x < WidthBoundary:
             char_x += char_speed
+            left = True
+            right = False
+            current_set = 1
         elif keys[pygame.K_w] and char_y > char_speed:
             char_y -= char_speed
+            current_set = 1
         elif keys[pygame.K_s] and char_y < HeightBoundary:
             char_y += char_speed
-
-    #Load/Update Background
-    win.fill(sand)
-
-   #Load the trash in
-    for trash in TrashPile:
-        pygame.draw.rect(win, purple, trash)
+            current_set = 1
+        else:
+            current_set = 0
 
     #~~~ Update frame animation ~~~
     #Get the current ingame time
@@ -105,15 +129,22 @@ while run:
         current_frame += 1
         last_update = current_time
     #When all frames are played, reset to the starting frame
-    if current_frame >= len(frameList):
+    if current_frame >= frameSet[current_set]:
         current_frame = 0
         
-    # char = pygame.Rect(char_x, char_y, char_width, char_height)
-    # pygame.draw.rect(win, black, char)
-    #Instead of a rectangle, it been replace with a single frame from the sprite sheet
-
-    #Show frame
-    win.blit(frameList[current_frame], (char_x, char_y))
-
-    pygame.display.flip()
+    redrawGameWindow()
 pygame.quit()
+
+
+
+# #Make a list of interactive trash sprites
+# TrashPile= []
+# for i in range(10):
+#     #Randomly assign a size and location of each piece of trash
+#     trash_x = random.randint(5, ScreenWidth - 100)
+#     trash_y = random.randint(5, ScreenHeight - 100)
+#     trash_w = random.randint(20, 50)
+#     trash_h = random.randint(20, 80)
+#     #Create and add them to the TrashPile list
+#     trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
+#     TrashPile.append(trash)
