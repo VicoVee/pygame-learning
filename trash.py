@@ -15,6 +15,28 @@ sand = pygame.Color("#FFF0AD")
 black = pygame.Color(0,0,0)
 purple = pygame.Color("#A115B3")
 
+# ~~ Methods ~~
+def redrawGameWindow():
+    global set
+
+    #Load/Update Background
+    win.fill(sand)
+    
+    #Load the trash in
+    for trash in TrashPile:
+        pygame.draw.rect(win, purple, trash)
+
+    #Show frame
+    if current_set == 1 and left == True:
+        win.blit(frameWalkLeft[current_frame], (char_x, char_y))
+    elif current_set == 1 and right == True:
+        win.blit(frameWalkRight[current_frame], (char_x, char_y))
+    else:
+        win.blit(frameStand[current_frame], (char_x, char_y))
+
+    #Update Window
+    pygame.display.flip()
+
 # ~~ Getting the Character Sprite ~~
 #Load in the spritesheet
 doug_sheet = sprite.Spritesheet('doug.png')
@@ -66,27 +88,17 @@ WidthBoundary = ScreenWidth - char_width - char_speed
 HeightBoundary = ScreenHeight - char_height - char_speed
 
 
-def redrawGameWindow():
-    global set
-
-    #Load/Update Background
-    win.fill(sand)
-    
-    # #Load the trash in
-    # for trash in TrashPile:
-    #     pygame.draw.rect(win, purple, trash)
-
-    #Show frame
-    if current_set == 1 and left == True:
-        win.blit(frameWalkLeft[current_frame], (char_x, char_y))
-    elif current_set == 1 and right == True:
-        win.blit(frameWalkRight[current_frame], (char_x, char_y))
-    else:
-        win.blit(frameStand[current_frame], (char_x, char_y))
-
-
-    #Update Window
-    pygame.display.flip()
+#Make a list of interactive trash sprites
+TrashPile= []
+for i in range(10):
+    #Randomly assign a size and location of each piece of trash
+    trash_x = random.randint(5, ScreenWidth - 100)
+    trash_y = random.randint(5, ScreenHeight - 100)
+    trash_w = random.randint(20, 50)
+    trash_h = random.randint(20, 80)
+    #Create and add them to the TrashPile list
+    trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
+    TrashPile.append(trash)
 
 run = True
 while run:
@@ -137,14 +149,3 @@ pygame.quit()
 
 
 
-# #Make a list of interactive trash sprites
-# TrashPile= []
-# for i in range(10):
-#     #Randomly assign a size and location of each piece of trash
-#     trash_x = random.randint(5, ScreenWidth - 100)
-#     trash_y = random.randint(5, ScreenHeight - 100)
-#     trash_w = random.randint(20, 50)
-#     trash_h = random.randint(20, 80)
-#     #Create and add them to the TrashPile list
-#     trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
-#     TrashPile.append(trash)
