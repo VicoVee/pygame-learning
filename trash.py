@@ -23,8 +23,9 @@ def redrawGameWindow():
     win.fill(sand)
     
     #Load the trash in
+    #trash = (0:surface_img, 1:(x,y coordinates))
     for trash in TrashPile:
-        pygame.draw.rect(win, purple, trash)
+        win.blit(trash[0], trash[1])
 
     #Show frame
     if current_set == 1 and left == True:
@@ -34,14 +35,32 @@ def redrawGameWindow():
     else:
         win.blit(frameStand[current_frame], (char_x, char_y))
 
+
     #Update Window
     pygame.display.flip()
 
 # ~~ Getting the Character Sprite ~~
 #Load in the spritesheet
 doug_sheet = sprite.Spritesheet('doug.png')
+food_sheet = sprite.Spritesheet('Food.png')
+
+# ~~ Character Location + Dimensions ~~
+    #Character (x-coor, y-coord, width, height)
+    #NOTE: Left-Right starts from 0 to 500
+    #NOTE: Up-Down starts from 0 to 500 as well
+char_x = 50
+char_y = 460
+char_speed = 15
+char_scale = 5
+left = None
+right = None
+
 #Take a single frame from the spritesheet
-frame0 = doug_sheet.get_frame(1,0,0,24,24,3)
+frame0 = doug_sheet.get_frame(1,0,0,24,24, char_scale)
+
+char_width = frame0.get_width()
+char_height = frame0.get_height()
+
 
 # ~~ Creating Sprite animation ~~
 #Holds a list of all frames in the animation
@@ -63,25 +82,14 @@ current_frame = 0
 
 #Collects all the frames based on the selected frameSet
 for i in range(frameSet[0]):
-    frameStand.append(doug_sheet.get_frame(i, 0, 0, 24, 24, 3))
+    frameStand.append(doug_sheet.get_frame(i, 0, 0, 24, 24, char_scale))
 
 for i in range(frameSet[1]):
-    frameWalkLeft.append(doug_sheet.get_frame(i + frameSet[0], 0, 0, 24, 24, 3))
+    frameWalkLeft.append(doug_sheet.get_frame(i + frameSet[0], 0, 0, 24, 24, char_scale))
 
 for i in range(len(frameWalkLeft)):
     frameWalkRight.append(pygame.transform.flip(frameWalkLeft[i], True, False))
 
-# ~~ Character Location + Dimensions ~~
-    #Character (x-coor, y-coord, width, height)
-    #NOTE: Left-Right starts from 0 to 500
-    #NOTE: Up-Down starts from 0 to 500 as well
-char_x = 50
-char_y = 460
-char_width = frame0.get_width()
-char_height = frame0.get_height()
-char_speed = 15
-left = None
-right = None
 
 #Window Boundaries
 WidthBoundary = ScreenWidth - char_width - char_speed
@@ -90,15 +98,17 @@ HeightBoundary = ScreenHeight - char_height - char_speed
 
 #Make a list of interactive trash sprites
 TrashPile= []
-for i in range(10):
-    #Randomly assign a size and location of each piece of trash
-    trash_x = random.randint(5, ScreenWidth - 100)
-    trash_y = random.randint(5, ScreenHeight - 100)
-    trash_w = random.randint(20, 50)
-    trash_h = random.randint(20, 80)
-    #Create and add them to the TrashPile list
-    trash = pygame.Rect(trash_x,trash_y,trash_w,trash_h)
-    TrashPile.append(trash)
+for i in range(5):
+    #Randomly assign a location of each trash sprite
+    food_x = random.randint(5, ScreenWidth - 100)
+    food_y = random.randint(5, ScreenHeight - 100)
+
+    #Get the trash sprite image
+    food0 = food_sheet.get_frame(0,0,0,16,16,4)
+
+    #Add the image and the randomly generated coordinates as a pair in the list.
+    TrashPile.append((food0, (food_x, food_y)))
+
 
 run = True
 while run:
