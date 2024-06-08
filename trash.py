@@ -27,6 +27,9 @@ def redrawGameWindow():
     for trash in TrashPile:
         win.blit(trash[0], trash[1])
 
+    char_hitbox = (char_x + 25, char_y+15, char_width-50, char_height-30)
+    pygame.draw.rect(win, purple, char_hitbox)
+
     #Show frame
     if current_set == 1 and left == True:
         win.blit(frameWalkLeft[current_frame], (char_x, char_y))
@@ -34,7 +37,8 @@ def redrawGameWindow():
         win.blit(frameWalkRight[current_frame], (char_x, char_y))
     else:
         win.blit(frameStand[current_frame], (char_x, char_y))
-
+    
+    
 
     #Update Window
     pygame.display.flip()
@@ -60,6 +64,8 @@ frame0 = doug_sheet.get_frame(1,0,0,24,24, char_scale)
 
 char_width = frame0.get_width()
 char_height = frame0.get_height()
+
+
 
 
 # ~~ Creating Sprite animation ~~
@@ -104,7 +110,7 @@ for i in range(5):
     food_y = random.randint(5, ScreenHeight - 100)
 
     #Get the trash sprite image
-    food0 = food_sheet.get_frame(0,0,0,16,16,4)
+    food0 = food_sheet.get_frame(0,0,0,16,16,3)
 
     #Add the image and the randomly generated coordinates as a pair in the list.
     TrashPile.append((food0, (food_x, food_y)))
