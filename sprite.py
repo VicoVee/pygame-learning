@@ -21,7 +21,7 @@ class Spritesheet():
         #Add the transparency from the spritesheet
         sprite.set_colorkey((0,0,0))
 
-        #Get the spritesheet, location of the surface, and the portion of the spritesheet
+        #Get the spritesheet, location of the surface, and the portion of the spritesheet (row)
         sprite.blit(self.sprite_sheet, (0,0), ((frame* w),y,w,h))
 
         #Increasing the scale of the picture (sprite image, [width, height])

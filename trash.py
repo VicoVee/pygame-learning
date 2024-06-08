@@ -8,7 +8,7 @@ pygame.init()
 ScreenWidth = 600
 ScreenHeight = 600
 win = pygame.display.set_mode((ScreenWidth, ScreenHeight))
-pygame.display.set_caption('Trash Collecting')
+pygame.display.set_caption('Doug Eat Cookies')
 
 #Background Colors
 sand = pygame.Color("#FFF0AD")
@@ -22,12 +22,13 @@ def redrawGameWindow():
     #Load/Update Background
     win.fill(sand)
     
-    #Load the trash in
-    #trash = (0:surface_img, 1:(x,y coordinates))
-    for trash in TrashPile:
-        win.blit(trash[0], trash[1])
+    #Load the Cookie in
+    #Cookie = (0:surface_img, 1:(x,y coordinates))
+    for cookie in CookiePile:
+        pygame.draw.rect(win, "red", cookie[2])
+        win.blit(cookie[0], cookie[1])
 
-    char_hitbox = (char_x + 25, char_y+15, char_width-50, char_height-30)
+    char_hitbox = (char_x + 40, char_y + 20, char_width-80, char_height-35)
     pygame.draw.rect(win, purple, char_hitbox)
 
     #Show frame
@@ -66,8 +67,6 @@ char_width = frame0.get_width()
 char_height = frame0.get_height()
 
 
-
-
 # ~~ Creating Sprite animation ~~
 #Holds a list of all frames in the animation
 frameStand = []
@@ -102,18 +101,25 @@ WidthBoundary = ScreenWidth - char_width - char_speed
 HeightBoundary = ScreenHeight - char_height - char_speed
 
 
-#Make a list of interactive trash sprites
-TrashPile= []
+#Make a list of interactive cookie sprites
+CookiePile= []
 for i in range(5):
-    #Randomly assign a location of each trash sprite
+     #Get the cookie sprite image
+    food0 = food_sheet.get_frame(0,0,0,16, 16,3)
+
+    #Randomly assign a location of each cookie sprite
     food_x = random.randint(5, ScreenWidth - 100)
     food_y = random.randint(5, ScreenHeight - 100)
 
-    #Get the trash sprite image
-    food0 = food_sheet.get_frame(0,0,0,16,16,3)
+    #Get the width and height of the cookie sprite
+    food_w = food0.get_width()
+    food_h = food0.get_height()
+
+    #Create hitbox
+    food_hitbox = (food_x + 5, food_y + 5, food_w - 10, food_h - 10)
 
     #Add the image and the randomly generated coordinates as a pair in the list.
-    TrashPile.append((food0, (food_x, food_y)))
+    CookiePile.append((food0, (food_x, food_y), food_hitbox))
 
 
 run = True
@@ -142,9 +148,13 @@ while run:
             current_set = 1
         elif keys[pygame.K_w] and char_y > char_speed:
             char_y -= char_speed
+            left = True
+            right = False
             current_set = 1
         elif keys[pygame.K_s] and char_y < HeightBoundary:
             char_y += char_speed
+            left = True
+            right = False
             current_set = 1
         else:
             current_set = 0
