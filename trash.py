@@ -23,13 +23,13 @@ def redrawGameWindow():
     #Load all Cookies in CookiePile; Not in pile? Won't load
     #Cookie = (0:surface_img, 1:(x,y coordinates), 2:Rectangle food_hitbox)
     for cookie in CookiePile:
-        pygame.draw.rect(win, "red", cookie[2])
+        #pygame.draw.rect(win, "red", cookie[2])
         #Show the image; cookie[0] is the sprite sheet, cookie[1] is the (x,y) coordinates
         win.blit(cookie[0], cookie[1])
             
     #Display the character hitbox for testing
     char_hitbox = pygame.Rect(char_x + char_scale*6, char_y + char_scale*4, char_width*0.5, char_height*0.7)
-    pygame.draw.rect(win, purple, char_hitbox)
+    #pygame.draw.rect(win, purple, char_hitbox)
 
     #Using the collidelist, check if the char_hitbox touches any of the cookie hitbox
     #Returns the index of the touched cookie
@@ -72,7 +72,7 @@ food_sheet = sprite.Spritesheet('Food.png')
     #NOTE: Left-Right starts from 0 to 500
     #NOTE: Up-Down starts from 0 to 500 as well
 char_x = 50
-char_y = 460
+char_y = 500
 char_speed = 30
 char_scale = 8
 left = None
@@ -129,7 +129,7 @@ for i in range(10):
 
     #Randomly assign a location of each cookie sprite
     food_x = random.randint(char_speed, ScreenWidth - 150)
-    food_y = random.randint(char_speed, ScreenHeight - 150)
+    food_y = random.randint(char_speed, ScreenHeight - char_height)
 
     #Get the width and height of the cookie sprite
     food_w = food0.get_width()
