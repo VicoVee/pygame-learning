@@ -17,30 +17,39 @@ purple = pygame.Color("#A115B3")
 
 # ~~ Methods ~~
 def redrawGameWindow():
-    global set
-
     #Load/Update Background
     win.fill(sand)
     
-    #Load the Cookie in
+    #Load all Cookies in CookiePile; Not in pile? Won't load
     #Cookie = (0:surface_img, 1:(x,y coordinates), 2:Rectangle food_hitbox)
     for cookie in CookiePile:
-        if(cookie[3] == False):
-            pygame.draw.rect(win, "red", cookie[2])
-            win.blit(cookie[0], cookie[1])
+        pygame.draw.rect(win, "red", cookie[2])
+        #Show the image; cookie[0] is the sprite sheet, cookie[1] is the (x,y) coordinates
+        win.blit(cookie[0], cookie[1])
             
-
+    #Display the character hitbox for testing
     char_hitbox = pygame.Rect(char_x + 40, char_y + 20, char_width-80, char_height-35)
     pygame.draw.rect(win, purple, char_hitbox)
 
-    if pygame.Rect.collidelist(char_hitbox, CookieList) != -1:
-        deleteCookie = char_hitbox.collidelist(CookieList)
-        y = list(CookiePile[deleteCookie])
-        y[3] = True
-        CookiePile[deleteCookie] = tuple(y)
+    #Using the collidelist, check if the char_hitbox touches any of the cookie hitbox
+    #Returns the index of the touched cookie
+    if pygame.Rect.collidelist(char_hitbox, CookieHitbox) != -1:
+        #Get the cookie's index that was touched by Doug
+        deleteCookie = char_hitbox.collidelist(CookieHitbox)
+
+        #Add cookie to the eaten list, which will make it hidden
+        EatenCookie.append(CookiePile.pop(deleteCookie))
+        #Delete the old hitbox
+        CookieHitbox.pop(deleteCookie)
+        # print("--------------------------------------------------")
+        # print(EatenCookie)
+        # print(CookieHitbox)
+        # print(CookiePile)
+        
+
         #Cannot delete cookie from list. After it deletes, the default deleteCookie value is None == pop().
         #All the cookies will then be deleted one by one, even if Doug is not touching
-
+        #Solution: Simply hide the cookie, do not delete from list. Hide and then change (x,y) coordinates
 
     #Show frame
     if current_set == 1 and left == True:
@@ -112,9 +121,9 @@ HeightBoundary = ScreenHeight - char_height - char_speed
 
 #Make a list of interactive cookie sprites
 CookiePile= []
-CookieList = []
-cookieHidden = False
-for i in range(5):
+CookieHitbox = []
+EatenCookie = []
+for i in range(10):
      #Get the cookie sprite image
     food0 = food_sheet.get_frame(0,0,0,16, 16,3)
 
@@ -131,9 +140,8 @@ for i in range(5):
 
     #Add the image and the randomly generated coordinates as a pair in the list.
     # Sprite Image/Frame, Location, Hitbox Rectangle, cookieHidden Status
-    CookiePile.append((food0, (food_x, food_y), food_hitbox, cookieHidden))
-    CookieList.append(food_hitbox)
-
+    CookiePile.append((food0, (food_x, food_y), food_hitbox))
+    CookieHitbox.append(food_hitbox)
 
 run = True
 while run:
