@@ -25,16 +25,22 @@ def redrawGameWindow():
     #Load the Cookie in
     #Cookie = (0:surface_img, 1:(x,y coordinates), 2:Rectangle food_hitbox)
     for cookie in CookiePile:
-        pygame.draw.rect(win, "red", cookie[2])
-        win.blit(cookie[0], cookie[1])
+        if(cookie[3] == False):
+            pygame.draw.rect(win, "red", cookie[2])
+            win.blit(cookie[0], cookie[1])
+            
 
     char_hitbox = pygame.Rect(char_x + 40, char_y + 20, char_width-80, char_height-35)
     pygame.draw.rect(win, purple, char_hitbox)
 
     if pygame.Rect.collidelist(char_hitbox, CookieList) != -1:
         deleteCookie = char_hitbox.collidelist(CookieList)
-        print(deleteCookie)
-        # CookiePile.pop(deleteCookie)
+        y = list(CookiePile[deleteCookie])
+        y[3] = True
+        CookiePile[deleteCookie] = tuple(y)
+        #Cannot delete cookie from list. After it deletes, the default deleteCookie value is None == pop().
+        #All the cookies will then be deleted one by one, even if Doug is not touching
+
 
     #Show frame
     if current_set == 1 and left == True:
@@ -107,7 +113,8 @@ HeightBoundary = ScreenHeight - char_height - char_speed
 #Make a list of interactive cookie sprites
 CookiePile= []
 CookieList = []
-for i in range(10):
+cookieHidden = False
+for i in range(5):
      #Get the cookie sprite image
     food0 = food_sheet.get_frame(0,0,0,16, 16,3)
 
@@ -123,7 +130,8 @@ for i in range(10):
     food_hitbox = pygame.Rect(food_x + 5, food_y + 5, food_w - 10, food_h - 10)
 
     #Add the image and the randomly generated coordinates as a pair in the list.
-    CookiePile.append((food0, (food_x, food_y), food_hitbox))
+    # Sprite Image/Frame, Location, Hitbox Rectangle, cookieHidden Status
+    CookiePile.append((food0, (food_x, food_y), food_hitbox, cookieHidden))
     CookieList.append(food_hitbox)
 
 
