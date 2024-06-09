@@ -5,8 +5,8 @@ import sprite
 pygame.init()
 
 #Game Window Setup
-ScreenWidth = 600
-ScreenHeight = 600
+ScreenWidth = 1280
+ScreenHeight = 720
 win = pygame.display.set_mode((ScreenWidth, ScreenHeight))
 pygame.display.set_caption('Doug Eat Cookies')
 
@@ -28,7 +28,7 @@ def redrawGameWindow():
         win.blit(cookie[0], cookie[1])
             
     #Display the character hitbox for testing
-    char_hitbox = pygame.Rect(char_x + 40, char_y + 20, char_width-80, char_height-35)
+    char_hitbox = pygame.Rect(char_x + char_scale*6, char_y + char_scale*4, char_width*0.5, char_height*0.7)
     pygame.draw.rect(win, purple, char_hitbox)
 
     #Using the collidelist, check if the char_hitbox touches any of the cookie hitbox
@@ -73,8 +73,8 @@ food_sheet = sprite.Spritesheet('Food.png')
     #NOTE: Up-Down starts from 0 to 500 as well
 char_x = 50
 char_y = 460
-char_speed = 15
-char_scale = 5
+char_speed = 30
+char_scale = 8
 left = None
 right = None
 
@@ -125,7 +125,7 @@ CookieHitbox = []
 EatenCookie = []
 for i in range(10):
      #Get the cookie sprite image
-    food0 = food_sheet.get_frame(0,0,0,16, 16,3)
+    food0 = food_sheet.get_frame(0, 0, 0, 16, 16, char_scale*0.6)
 
     #Randomly assign a location of each cookie sprite
     food_x = random.randint(char_speed, ScreenWidth - 150)
